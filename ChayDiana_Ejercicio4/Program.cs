@@ -22,3 +22,39 @@ Console.WriteLine("3. Personales");
 Console.WriteLine("4. Financieros");
 Console.WriteLine("Ingrese los datos comprendidos (1-4)");
 int datosComprendidos = int.Parse(Console.ReadLine());
+
+Console.WriteLine("Persistencia detectada S/N?");
+string persistenciaDetectada = Console.ReadLine();
+
+Console.WriteLine("Numero de usuarios afectados:");
+int usuariosAfectados = int.Parse(Console.ReadLine());
+
+if (tipoIncidente < 1 || tipoIncidente > 4)
+{
+    Console.WriteLine("Entrada no válida. Por favor, ingrese un número entre 1 y 4.");
+    return;
+}
+else if (activoAfectado < 1 || activoAfectado > 4)
+{
+    Console.WriteLine("Entrada no válida. Por favor, ingrese un número entre 1 y 4.");
+    return;
+}
+else if (datosComprendidos < 1 || datosComprendidos > 4)
+{
+    Console.WriteLine("Entrada no válida. Por favor, ingrese un número entre 1 y 4.");
+    return;
+}
+else if (persistenciaDetectada.ToUpper() != "S" && persistenciaDetectada.ToUpper() != "N")
+{
+    Console.WriteLine("Entrada no válida. Por favor, ingrese 'S' o 'N'.");
+    return;
+}
+else if (usuariosAfectados < 0)
+{
+    Console.WriteLine("Entrada no válida. Por favor, ingrese un número positivo.");
+    return;
+}
+else
+{
+    Console.WriteLine("Datos validos");
+}
