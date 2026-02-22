@@ -127,3 +127,54 @@ switch (tipoIncidente)
         }
         break;
 }
+
+// Ajuste general: "Pocos usuarios sin datos sensibles → Baja"
+// (solo baja si veníamos en Media; no toca Alta/Crítica)
+if (usuariosAfectados <= 5 && (datosComprendidos == 1 || datosComprendidos == 2) && severidad == 2)
+{
+    severidad = 1;
+}
+
+string severidadNombre = (severidad == 1) ? "Baja"
+                   : (severidad == 2) ? "Media"
+                   : (severidad == 3) ? "Alta"
+                   : "Crítica";
+
+string respuesta = "";
+
+switch (tipoIncidente)
+{
+    case 1: // Malware
+        if (severidad >= 3)
+            respuesta = "Aislar el equipo/servidor, erradicar malware, monitoreo 24/7.";
+        else
+            respuesta = "Escaneo antimalware, revisión de correos/descargas.";
+        break;
+
+    case 2: // Phishing
+        if (severidad >= 3)
+            respuesta = "Resetear credenciales, bloquear remitente/dominio, revisar accesos.";
+        else
+            respuesta = "Bloquear remitente, reporte del correo.";
+        break;
+
+    case 3: // Acceso no autorizado
+        if (severidad >= 3)
+            respuesta = "Revocar sesiones, forzar cambio de contraseñas y monitoreo intensivo.";
+        else
+            respuesta = "Revisar permisos y monitoreo.";
+        break;
+
+    case 4: // Fuga de información
+        if (severidad == 4)
+            respuesta = "Contener la fuga, deshabilitar accesos, preservar evidencias.";
+        else if (severidad == 3)
+            respuesta = "Bloqueo de canales de salida.";
+        else
+            respuesta = "Clasificar la información, corregir permisos.";
+        break;
+}
+
+Console.WriteLine("* RESULTADOS *");
+Console.WriteLine($"Severidad: {severidadNombre}");
+Console.WriteLine($"Respuesta recomendada: {respuesta}");
