@@ -58,3 +58,72 @@ else
 {
     Console.WriteLine("Datos validos");
 }
+
+// Severidad: 1=Baja, 2=Media, 3=Alta, 4=Crítica
+int severidad = 2; // por defecto
+
+switch (tipoIncidente)
+{
+    case 1: // Malware
+        switch (activoAfectado)
+        {
+            case 1: severidad = 2; break; // PC -> Media
+            case 2: severidad = 3; break; // Servidor -> Alta
+            case 3: severidad = 3; break; // Base de datos -> Alta
+            case 4: severidad = 2; break; // Red -> Media
+        }
+
+        if (persistenciaDetectada == "S" && activoAfectado == 2)
+        {
+            severidad = 4;
+        }
+        else
+        {
+            if (persistenciaDetectada == "S" && severidad < 4)
+                severidad = severidad + 1;
+        }
+
+        // Si hay datos personales/financieros comprometidos, ajustar
+        if (datosComprendidos == 4) // financieros
+            severidad = 4;
+        else if (datosComprendidos == 3 && severidad < 3) // personales
+            severidad = 3;
+        break;
+    case 2: // Phishing
+        severidad = 1; // Baja
+        if (datosComprendidos == 4)
+            severidad = 4; // financieros -> Crítica
+        else if (datosComprendidos == 3)
+            severidad = 3; // personales -> Alta
+        else
+        {
+            if (usuariosAfectados >= 20) 
+                severidad = 2; 
+        }
+        break;
+
+    case 3: // Acceso no autorizado
+        severidad = 3;
+        if (activoAfectado == 3 || datosComprendidos == 4)
+            severidad = 4;
+        else if (datosComprendidos == 3)
+            severidad = 3;
+        else if (datosComprendidos == 2 && severidad > 2)
+            severidad = 2;
+
+        if (persistenciaDetectada == "S" && severidad < 4)
+            severidad = severidad + 1;
+        break;
+
+    case 4: // Fuga de información
+        if (datosComprendidos == 4) severidad = 4;
+        else if (datosComprendidos == 3) severidad = 3;
+        else if (datosComprendidos == 2) severidad = 2;
+        else
+        {
+            // Sin datos, severidad baja si afecta a pocos usuarios
+            if (usuariosAfectados <= 5) severidad = 1;
+            else severidad = 2;
+        }
+        break;
+}
